@@ -141,10 +141,14 @@ def bbx2linset(bbx_corner, order='hwl', color=(0, 1, 0)):
     """
     if not isinstance(bbx_corner, np.ndarray):
         bbx_corner = common_utils.torch_tensor_to_numpy(bbx_corner)
+    else:
+        bbx_corner = np.asarray(bbx_corner)
 
     if len(bbx_corner.shape) == 2:
         bbx_corner = box_utils.boxes_to_corners_3d(bbx_corner,
                                                    order)
+    else:
+        bbx_corner = bbx_corner.copy()
 
     # Our lines span from points 0 to 1, 1 to 2, 2 to 3, etc...
     lines = [[0, 1], [1, 2], [2, 3], [0, 3],
@@ -191,10 +195,14 @@ def bbx2oabb(bbx_corner, order='hwl', color=(0, 0, 1)):
     """
     if not isinstance(bbx_corner, np.ndarray):
         bbx_corner = common_utils.torch_tensor_to_numpy(bbx_corner)
+    else:
+        bbx_corner = np.asarray(bbx_corner)
 
     if len(bbx_corner.shape) == 2:
         bbx_corner = box_utils.boxes_to_corners_3d(bbx_corner,
                                                    order)
+    else:
+        bbx_corner = bbx_corner.copy()
     oabbs = []
 
     for i in range(bbx_corner.shape[0]):
@@ -231,6 +239,8 @@ def bbx2aabb(bbx_center, order):
     """
     if not isinstance(bbx_center, np.ndarray):
         bbx_center = common_utils.torch_tensor_to_numpy(bbx_center)
+    else:
+        bbx_center = np.asarray(bbx_center)
     bbx_corner = box_utils.boxes_to_corners_3d(bbx_center, order)
 
     aabbs = []
@@ -387,6 +397,7 @@ def visualize_single_sample_output_gt(pred_tensor,
     origin_lidar = pcd
     if not isinstance(pcd, np.ndarray):
         origin_lidar = common_utils.torch_tensor_to_numpy(pcd)
+    origin_lidar = origin_lidar.copy()
 
     origin_lidar_intcolor = \
         color_encoding(origin_lidar[:, -1] if mode == 'intensity'
@@ -536,6 +547,7 @@ def visualize_single_sample_dataloader(batch_data,
     # we only visualize the first cav for single sample
     if len(origin_lidar.shape) > 2:
         origin_lidar = origin_lidar[0]
+    origin_lidar = origin_lidar.copy()
     origin_lidar_intcolor = \
         color_encoding(origin_lidar[:, -1] if mode == 'intensity'
                        else origin_lidar[:, 2], mode=mode)
@@ -609,6 +621,7 @@ def visualize_inference_sample_dataloader(pred_box_tensor,
     # this is for 2-stage origin lidar, it has different format
     if origin_lidar.shape[1] > 4:
         origin_lidar = origin_lidar[:, 1:]
+    origin_lidar = origin_lidar.copy()
 
     origin_lidar_intcolor = \
         color_encoding(origin_lidar[:, -1] if mode == 'intensity'

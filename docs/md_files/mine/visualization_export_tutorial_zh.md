@@ -43,9 +43,9 @@ conda run -n torch118 python opencood/visualization/vis_data_sequence.py \
 
 ```bash
 conda run -n torch118 python opencood/visualization/vis_data_sequence.py \
-  --fusion_method intermediate \
-  --color_mode z-value \
-  --save_path logs/intermediate_zvalue.png
+  --fusion_method late \
+  --color_mode constant \
+  --save_path logs/late_constant.png
 ```
 
 ## 3. 控制分辨率与细节
@@ -79,9 +79,10 @@ conda run -n torch118 python opencood/visualization/vis_data_sequence.py \
 
 ```bash
 conda run -n torch118 python opencood/visualization/vis_data_sequence.py \
+  --fusion_method early \
   --color_mode constant \
   --frame_index -1 \
-  --save_path logs/late_last.png
+  --save_path logs/early_endFrame.png
 ```
 
 ## 5. 批量导出多帧
